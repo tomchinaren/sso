@@ -33,10 +33,10 @@ namespace sso
             UserSession session = JsonConvert.DeserializeObject<UserSession>(json);
             this.Token = session.Token;
         }
-        public string CreateSessionString()
+        public string CreateSessionString(string token)
         {
             //new token
-            this.Token = CreateToken();
+            this.Token = token;
 
             //serialize
             var sessionString = JsonConvert.SerializeObject(this);
@@ -51,7 +51,7 @@ namespace sso
             return encryptSessionString + sign;
         }
 
-        private string CreateToken()
+        public string CreateToken()
         {
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();

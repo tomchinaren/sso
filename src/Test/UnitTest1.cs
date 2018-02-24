@@ -11,7 +11,7 @@ namespace Test
         public void TestGetNewSessionString()
         {
             var session = new UserSession();
-            var sessionString = session.CreateSessionString();
+            var sessionString = session.CreateSessionString( session.CreateToken() );
             Assert.IsTrue(!string.IsNullOrWhiteSpace(sessionString), "session非空");
             Assert.IsTrue(!string.IsNullOrWhiteSpace(session.Token),"token非空");
             Console.WriteLine("sessionString:{0}", sessionString);
@@ -22,7 +22,7 @@ namespace Test
         public void TestDecryptSessionString()
         {
             var session = new UserSession();
-            var sessionString = session.CreateSessionString();
+            var sessionString = session.CreateSessionString(session.CreateToken());
             Assert.IsTrue(!string.IsNullOrWhiteSpace(sessionString),"session非空");
             Assert.IsTrue(!string.IsNullOrWhiteSpace(session.Token),"token非空");
 
