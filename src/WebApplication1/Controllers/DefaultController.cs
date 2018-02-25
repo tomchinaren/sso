@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
 
         public ActionResult Index2()
         {
-            return Json(new { msg = "goodboy"});
+            return Json(new { msg = "goodboy"}, JsonRequestBehavior.AllowGet);
         }
     }
 }

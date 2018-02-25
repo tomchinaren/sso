@@ -12,7 +12,7 @@ namespace Passport.Controllers
     public class DefaultController : Controller
     {
         private static string AuthDomain = ".sso.com";
-        private static string DefaultIndex = "http://webapp1.com/Default/Index2";
+        private static string DefaultIndex = "http://webapp1.sso.com/Default/Index";
         private static List<User> _UserList = new List<Controllers.User>();
         public DefaultController()
         {
@@ -47,7 +47,7 @@ namespace Passport.Controllers
                 var sesssion = new UserSession();
                 var sessionString = sesssion.CreateSessionString(sesssion.CreateToken());
 
-                WriteCookie(sessionString, false, 0);
+                WriteCookie(sesssion.Token, sessionString, false, 0);
             }
 
             return Json(new { success = success, err = "1" });
@@ -77,7 +77,7 @@ namespace Passport.Controllers
             }
         }
 
-        private void WriteCookie(string signedSessionString, bool isPersistent, uint persistentDays)
+        private void WriteCookie(string token, string signedSessionString, bool isPersistent, uint persistentDays)
         {
             var now = DateTime.Now;
             DateTime expire;
@@ -98,7 +98,14 @@ namespace Passport.Controllers
             cookie.Expires = expire;
             cookie.Domain = AuthDomain;
             cookie.HttpOnly = true;
+
+            //设置跨域
+            Response.Headers.Set("P3P", "CP='IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT'");
             Response.Cookies.Set(cookie);
+
+            //FormsAuthentication
+            FormsAuthentication.SignOut();
+            FormsAuthentication.SetAuthCookie(token, isPersistent);
         }
 
         private void RemoveSessionInCookie()
