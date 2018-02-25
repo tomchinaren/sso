@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div>
+    <form>
+        <input type="hidden" id="callbackUrl" value="@ViewBag.callbackUrl"/>
+        <div><input name="userName" type="text" placeholder="username" value="tom" /></div>
+        <div><input name="password" type="password" placeholder="password" value="123456" /></div>
+        <div><button id="btnLogin" type="button">login</button></div>
+    </form>
+</div>
+
+@section scripts{ 
+<script>
+    $("#btnLogin").click(function () {
+        var postData = $("form").serializeObject();
+        $.ajax({
+            type: "post",
+            data: postData,
+            url: "PostLogin",
+            success: function (e) {
+                console.log(e.success);
+                debugger
+                if (e.success) {
+                    window.location.href = $("#callbackUrl").val();
+                }
+                else {
+                    alert(false);
+                }
+            },
+            error: function (e) { console.warn(e); }
+        });
+    });
+</script>
+}
